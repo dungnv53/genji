@@ -1,0 +1,9 @@
+1. them nhac cho hinh moi khi tap.
+- Co the moi hinh hay 1 nhom hinh co sound dac trung de de nho.
+- Voi mode pinyin thi co the bat cach doc tu do, vd la time de doc phai nhanh theo level 
+ma thoi gian lat hinh setting.
+- thay doi bg color.
+- choi nhac
+- home button
+- thay image Bing thanh Sign trong Covert Ops
+
