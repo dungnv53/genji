@@ -1,4 +1,4 @@
-package com.example.bublesmile;
+package com.example.genji;
 
 import android.widget.Button;
 

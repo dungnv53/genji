@@ -32,7 +32,7 @@ android:bufferType="normal"
 android:textColor="#FFEEAA" /> 
 </TableRow>
 <TableRow android:id="@+id/TableRow03"
-android:paddingTop="30px"
+android:paddingTop="30dp"
 android:layout_width="match_parent"
 android:layout_height="wrap_content" 
 android:gravity="center">
@@ -45,7 +45,7 @@ android:gravity="center">
 <ImageView android:id="@+id/ImageView01" 
 android:layout_width="wrap_content" 
 android:layout_height="wrap_content" 
-android:layout_gravity="center" />
+android:layout_gravity="center" android:contentDescription="TODO"/>
 
 </LinearLayout>
 
@@ -64,8 +64,8 @@ android:layout_height="wrap_content">
 
 <Button android:id="@+id/btnnew" 
 android:background="@drawable/iconhome"
-android:layout_width="40px" 
-android:layout_height="40px"> 
+android:layout_width="40dp" 
+android:layout_height="40dp"> 
 </Button>
 
 </TableRow>

@@ -1,4 +1,4 @@
-package com.example.bublesmile;
+package com.example.genji;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import com.example.genji.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -25,13 +27,14 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
-public class BubbleSmile extends Activity {
+public class Genji extends Activity {
 private static int ROW_COUNT = -1;
 private static int COL_COUNT = -1;
 private Context context;
@@ -80,13 +83,13 @@ public void onCreate(Bundle savedInstanceState) {
 }
 
 public void progressDialog(){
-	final ProgressDialog progressDialog = ProgressDialog.show(BubbleSmile.this, "", "Loading...", true);
+	final ProgressDialog progressDialog = ProgressDialog.show(Genji.this, "", "Loading...", true);
 	
 	new Thread(new Runnable(){
 	
 	public void run(){
 		try {
-			Thread.sleep(300);
+			Thread.sleep(100);
 			progressDialog.dismiss();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -193,10 +196,21 @@ private View createImageButton(int x, int y){
 
 class ButtonListener implements OnClickListener {
 
+int doubleTap = 0;        // wrap imag when re-tap
+int currentCard = -1;      // current position of Card select
+
 @Override
 public void onClick(View v) {
+	if(currentCard != v.getId()) {      
+		currentCard = v.getId();
+		doubleTap = 0;
+	Log.i("doubleTap: ", " tap in another card n = " + doubleTap + " other  card = " + currentCard);
+	} else {     // Tap dung card 2,3 ..n lan
+		doubleTap++;
+	}
 	synchronized (lock) {
-		if(firstCard!=null && seconedCard != null){
+		if(firstCard!=null && seconedCard != null){  // ???
+			Log.i("2 card", "card 1 = " + firstCard.x + firstCard.y + " 2nd card = " + seconedCard.x + seconedCard.y);
 			return;
 		}
 		int id = v.getId();
@@ -204,10 +218,17 @@ public void onClick(View v) {
 		int y = id%100;
 		turnCard((Button)v,x,y);
 	}
+	Log.i("doubleTap: ", " tap n = " + doubleTap + " cur card = " + currentCard);
 }
 
 private void turnCard(Button button,int x, int y) {
-	button.setBackgroundDrawable(images.get(cards[x][y]));
+	if((doubleTap%2) == 0) {
+		button.setBackgroundDrawable(images.get(cards[x][y]));
+	} else {
+		button.setBackgroundDrawable(backImage);
+		firstCard = null;
+		return;
+	}
 	//playSelectedSound();
 	if(firstCard==null){
 		firstCard = new Card(button,x,y);
@@ -216,7 +237,7 @@ private void turnCard(Button button,int x, int y) {
 		if(firstCard.x == x && firstCard.y == y){
 			return;
 		}
-			
+		Log.i("doubleTap: ", " tap n = " + doubleTap + " cur card = " + currentCard);
 		seconedCard = new Card(button,x,y);	
 		
 		TimerTask tt = new TimerTask() {
@@ -234,7 +255,7 @@ private void turnCard(Button button,int x, int y) {
 		};
 			
 		Timer t = new Timer(false);
-		t.schedule(tt, 400); // delay when swap icon
+		t.schedule(tt, 300); // delay when swap icon
 	}
   }
 }
@@ -247,6 +268,7 @@ public void handleMessage(Message msg) {
 		checkCards();
 	}
 }
+@SuppressWarnings("deprecation")
 public void checkCards(){
 	
 	if(cards[seconedCard.x][seconedCard.y] == cards[firstCard.x][firstCard.y]){
